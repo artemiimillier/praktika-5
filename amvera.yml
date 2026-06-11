@@ -1,0 +1,13 @@
+meta:
+  environment: node
+  toolchain:
+    name: npm
+    version: 20
+build:
+  # MVP без зависимостей и без package.json — пропускаем npm install
+  skip: yes
+run:
+  # Точка входа лежит в подпапке mvp/, запускаем чистым node
+  command: node mvp/server.js
+  # Сервер слушает process.env.PORT || 3000 → фиксируем 3000, PORT задаём в переменных окружения
+  containerPort: 3000
