@@ -1,0 +1,12 @@
+{
+  "name": "praktika-5-multik-mvp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MVP «Мультик»: фото ребёнка → AI-персонаж → раскадровка (kie.ai nano-banana)",
+  "scripts": {
+    "start": "node mvp/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

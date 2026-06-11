@@ -1,0 +1,11 @@
+# Не загружать на Railway: секрет, приватные данные, тяжёлое/ненужное в рантайме
+.env
+.git
+.business
+photo_1944313.jpg
+mvp/samples
+.playwright-mcp
+retrospectives
+plans
+examples
+templates

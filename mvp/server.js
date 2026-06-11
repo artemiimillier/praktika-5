@@ -8,9 +8,14 @@ const config = require('./config');
 
 // ---------- .env: ключ kie.ai (значение не логируем) ----------
 function loadKieKey() {
-  if (process.env.KIE_API_KEY) return process.env.KIE_API_KEY;
+  // 1) Переменная окружения с KIE в имени (на хостинге/Railway задаётся KIE_AI_API_KEY)
+  const envKie = Object.keys(process.env).find((n) => /KIE/i.test(n) && process.env[n]);
+  if (envKie) { console.log(`[env] ключ kie.ai из переменной окружения ${envKie}`); return process.env[envKie]; }
+  // 2) Локальная разработка — из .env в корне проекта
   const envPath = path.join(__dirname, '..', '.env');
-  if (!fs.existsSync(envPath)) throw new Error('.env не найден в корне проекта');
+  if (!fs.existsSync(envPath)) {
+    throw new Error('Ключ kie.ai не задан: пропиши переменную окружения KIE_AI_API_KEY (на хостинге) или положи .env в корень проекта (локально)');
+  }
   const vars = {};
   for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
     const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/);
@@ -197,21 +202,22 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-// Старт с авто-подбором свободного порта — 3000/3001 часто заняты другими проектами,
-// поэтому без этого `node mvp/server.js` падал бы с EADDRINUSE.
+// Старт. На хостинге (Railway и т.п.) порт приходит в переменной PORT — слушаем строго её.
+// Локально 3000/3001 часто заняты другими проектами → авто-подбор свободного порта.
 let port = Number(config.PORT) || 3000;
-let triesLeft = 15;
+let triesLeft = process.env.PORT ? 0 : 15; // в проде по портам не «прыгаем»
 server.on('error', (e) => {
   if (e.code === 'EADDRINUSE' && triesLeft > 0) {
     console.log(`[port] ${port} занят, пробую ${port + 1}…`);
     triesLeft -= 1; port += 1;
-    setTimeout(() => server.listen(port), 80);
+    setTimeout(() => server.listen(port, '0.0.0.0'), 80);
   } else {
     console.error('[fatal]', e.message);
     process.exit(1);
   }
 });
 server.on('listening', () => {
-  console.log(`\n  ✨ Мультик MVP запущен → http://localhost:${port}\n  (останови: Ctrl+C)\n`);
+  const where = process.env.PORT ? `порт ${port}` : `http://localhost:${port}`;
+  console.log(`\n  ✨ Мультик MVP запущен → ${where}\n`);
 });
-server.listen(port);
+server.listen(port, '0.0.0.0');
