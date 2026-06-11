@@ -1,0 +1,63 @@
+# Секреты и локальные настройки - никогда не коммитить
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# --- Приватное: репозиторий публичный, это НЕ публикуем ---
+# Весь бизнес-контекст, КРОМЕ дизайн-системы (.business/assets)
+.business/*
+!.business/assets/
+# Тестовое фото ребёнка и сгенерированные сэмплы (лицо ребёнка)
+photo_1944313.jpg
+mvp/samples/
+
+# Локальные настройки Claude Code
+.claude/settings.local.json
+
+# Зависимости
+node_modules/
+.pnpm-store/
+.yarn/
+
+# Сборки
+.next/
+dist/
+build/
+out/
+
+# Системные
+.DS_Store
+Thumbs.db
+
+# Редакторы
+.idea/
+*.swp
+*.swo
+
+# Логи
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Тесты и кэши
+.cache/
+coverage/
+.nyc_output/
+.vitest-cache/
+
+# Playwright
+playwright-report/
+test-results/
+.playwright-mcp/
+
+# Внутренние рабочие файлы автора шаблона (не публикуются)
+TEST-PROTOCOL.md
+PUBLICATION-CHECKLIST.md
+retrospectives/*deep-review*
+retrospectives/*dry-run*
+retrospectives/*known-limitations*
+retrospectives/*pre-release*
+retrospectives/*ready-for-release*

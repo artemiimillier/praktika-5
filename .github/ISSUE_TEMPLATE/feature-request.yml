@@ -1,0 +1,44 @@
+name: 💡 Feature request
+description: Предложить новый промпт, улучшение AUTOPILOT, новую подпапку в business/
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Перед отправкой — посмотри [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md), особенно раздел «Что мы не принимаем».
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Какую проблему решаем
+      description: Какой сценарий работы с Клодом сейчас неудобен или повторяется?
+      placeholder: Сейчас каждый раз приходится писать промпт для X, было бы круто иметь готовый...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Предложение
+      description: Как это должно выглядеть? Что куда положить?
+      placeholder: Добавить промпт prompts/methodology/xxx.md с таким содержимым...
+    validations:
+      required: true
+
+  - type: textarea
+    id: niche
+    attributes:
+      label: Для каких ниш актуально
+      description: Универсально или для конкретных типов проектов (стоматология / SaaS / агентство / внутренний tool / медиа)?
+      placeholder: Универсально / только для SaaS / ...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: universality
+    attributes:
+      label: Фильтр универсальности (из CONTRIBUTING.md)
+      description: Эта фича работает для всех или только для твоей конкретной ниши?
+      options:
+        - label: Работает для 3+ разных типов проектов (не привязана к одному стеку/нише/сервису)
+          required: true

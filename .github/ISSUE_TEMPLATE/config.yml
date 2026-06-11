@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/artemiimillier/claude-code-starter/discussions
+    about: Для обсуждений, вопросов по методологии, кейсов использования
+  - name: 🔒 Сообщить об уязвимости
+    url: https://github.com/artemiimillier/claude-code-starter/security/advisories/new
+    about: Приватно — если нашёл утечку данных, проблему безопасности hooks или pre-commit
+  - name: 📚 Документация
+    url: https://github.com/artemiimillier/claude-code-starter#readme
+    about: README, TROUBLESHOOTING, CONTRIBUTING — начни оттуда

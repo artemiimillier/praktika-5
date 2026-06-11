@@ -1,0 +1,103 @@
+/* ============================================================
+   Multik — Дизайн-токены «Holographic Glam»
+   Единственный источник правды для цвета/шрифта/формы в коде.
+   Документация: ./design-system.md
+   Использование: импортируй этот файл и обращайся к var(--token).
+   НИКОГДА не хардкодь hex в компонентах — только переменные.
+   ============================================================ */
+
+/* Шрифты (Google Fonts) — все с поддержкой кириллицы (продукт русскоязычный):
+   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"> */
+
+:root {
+  /* ---------- Hero / главные акценты ---------- */
+  --pink-hero:   #FF2E97;   /* магента-герой: имена, главные CTA, лого */
+  --rose-bright: #FF2D5E;   /* роза-красный: срочность, цены, таймеры */
+  --pink-soft:   #FFA8D6;   /* мягкий розовый: подсветки, hover, иконки */
+
+  /* ---------- Secondary / фиолетовый каркас ---------- */
+  --grape:    #7B57B0;      /* заголовки-сан на светлом, сильные подписи */
+  --lavender: #A98FD9;      /* подзаголовки, рамки, второй акцент */
+  --lilac:    #C9B3EC;      /* разделители, disabled, лёгкие заливки */
+
+  /* ---------- Accent / премиум ---------- */
+  --gold:      #E3AE4E;     /* премиум-детали: обводка, корона/звезда */
+  --gold-soft: #F4D58A;     /* светлая часть золота, блики */
+
+  /* ---------- Текст и нейтральные ---------- */
+  --plum-ink:  #4E3D6B;     /* основной текст на светлом (НЕ чёрный) */
+  --plum-soft: #6E5C90;     /* вторичный текст, подписи, плейсхолдеры */
+  --white:     #FFFFFF;
+  --cream:     #FFF8FC;     /* тёплый «почти белый» фон-альтернатива */
+
+  /* ---------- Пастельные заливки ---------- */
+  --lavender-mist: #EADFF7;
+  --pink-mist:     #FBE2F0;
+  --sky:           #DCE6FA; /* барвинок / перивинкл */
+  --mint:          #C9F0DE;
+
+  /* ---------- Градиенты ---------- */
+  --grad-dream:       linear-gradient(160deg, #EADFF7 0%, #FBE0EF 50%, #E1E9FB 100%);
+  --grad-pink:        linear-gradient(135deg, #FF5BB0 0%, #FF2E8F 100%);
+  --grad-pink-purple: linear-gradient(135deg, #FF49A6 0%, #B65BD4 100%);
+  --grad-holo:        linear-gradient(120deg, #FBD4E8 0%, #DAC7F2 35%, #C4DDF6 70%, #CDF2E2 100%);
+  --grad-gold:        linear-gradient(135deg, #F6D98E 0%, #DDA340 100%);
+
+  /* ---------- Типографика ---------- */
+  --font-script:  "Pacifico", cursive;                   /* герой: имена, акценты (кириллица ✓) */
+  --font-display: "Montserrat", system-ui, sans-serif;   /* заголовки, кнопки 700–900 (кириллица ✓) */
+  --font-body:    "Nunito", system-ui, sans-serif;       /* текст, интерфейс (кириллица ✓) */
+
+  /* ---------- Радиусы ---------- */
+  --r-sm:   12px;
+  --r-md:   20px;
+  --r-lg:   28px;
+  --r-xl:   36px;
+  --r-pill: 999px;
+
+  /* ---------- Тени (всегда мягкие, цветные) ---------- */
+  --shadow-soft:      0 8px 24px rgba(155, 110, 200, .18);
+  --shadow-card:      0 12px 40px rgba(123, 87, 176, .20);
+  --shadow-glow-pink: 0 6px 24px rgba(255, 46, 151, .35);
+
+  /* ---------- Сетка отступов (шаг 4px) ---------- */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-6: 24px; --space-8: 32px; --space-12: 48px; --space-16: 64px;
+}
+
+/* ---------- База, на которую можно опереться ---------- */
+body {
+  background: var(--grad-dream);
+  background-attachment: fixed;
+  color: var(--plum-ink);
+  font-family: var(--font-body);
+}
+
+/* ---------- Утилиты-заготовки ---------- */
+.h-script { font-family: var(--font-script); color: var(--pink-hero); line-height: 1.1; }
+.h-display { font-family: var(--font-display); font-weight: 800; color: var(--grape); }
+
+.btn-primary {
+  font-family: var(--font-display); font-weight: 700; color: var(--white);
+  background: var(--grad-pink); border: none;
+  border-radius: var(--r-pill); padding: 14px 28px; cursor: pointer;
+  box-shadow: var(--shadow-glow-pink); transition: .15s;
+}
+.btn-primary:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+.btn-secondary {
+  font-family: var(--font-display); font-weight: 700; color: var(--grape);
+  background: var(--lavender-mist); border: 1px solid var(--lilac);
+  border-radius: var(--r-pill); padding: 12px 24px; cursor: pointer; transition: .15s;
+}
+
+.card {
+  background: var(--white); border-radius: var(--r-xl);
+  box-shadow: var(--shadow-card); padding: var(--space-8);
+}
+
+.badge {
+  display: inline-block; font-family: var(--font-display); font-weight: 700; font-size: 13px;
+  color: var(--grape); background: var(--pink-mist);
+  border-radius: var(--r-pill); padding: 4px 12px;
+}

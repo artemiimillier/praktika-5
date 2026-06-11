@@ -1,0 +1,27 @@
+name: ❓ Question
+description: Не знаю как использовать шаблон / методологию
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Вопросы лучше задавать в [Discussions](../discussions) — там можно обсуждать без закрытия. Issues удобнее для конкретных «что-то сломалось». Но если не знаешь куда — пиши сюда.
+
+        Перед вопросом посмотри:
+        - [README.md](../blob/main/README.md) - FAQ в конце
+        - [TROUBLESHOOTING.md](../blob/main/TROUBLESHOOTING.md) - решения типовых проблем
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Вопрос
+      placeholder: Не понимаю разницу между .business/ и plans/...
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Контекст
+      description: Что ты пытаешься сделать? На каком шаге застрял?
+      placeholder: Проходил AUTOPILOT до шага 8, хочу понять...

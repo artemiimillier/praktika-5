@@ -1,0 +1,20 @@
+{
+  // Минимум для шаблона - показать .business/ в сайдбаре.
+  // Остальное (tabSize, formatOnSave) настраивай под свой стек сам.
+
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.business": false,
+    "**/.vscode": false,
+    "**/.claude": false
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.business": false
+  }
+}

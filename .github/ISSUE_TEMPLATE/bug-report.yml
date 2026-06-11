@@ -1,0 +1,81 @@
+name: 🐛 Bug report
+description: Шаблон упал, AUTOPILOT ошибается, промпт не работает
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Спасибо за отчёт о баге. Перед отправкой:
+        - Убедись что это не проблема установки Claude Code / VS Code / Node.js — для этого смотри [TROUBLESHOOTING.md](../blob/main/TROUBLESHOOTING.md)
+        - Убедись что аналогичного issue ещё нет в открытых
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Что случилось
+      description: Коротко опиши что пошло не так
+      placeholder: Например — AUTOPILOT на шаге 5 не смог создать .claude/settings.json...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Как воспроизвести
+      description: Пошаговая инструкция
+      placeholder: |
+        1. Склонировал шаблон через `git clone ...`
+        2. Открыл в VS Code
+        3. Написал "привет"
+        4. На шаге N ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Ожидаемое поведение
+      placeholder: Клод должен был создать файл с правилами безопасности
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Операционная система
+      placeholder: macOS 14.5 / Windows 11 / Ubuntu 22.04
+    validations:
+      required: true
+
+  - type: input
+    id: claude-code-version
+    attributes:
+      label: Версия Claude Code
+      description: В VS Code — Extensions → Claude Code → Uninstall/Reload dropdown показывает версию
+      placeholder: 0.xx.x
+    validations:
+      required: true
+
+  - type: input
+    id: template-version
+    attributes:
+      label: Версия шаблона
+      description: Из CHANGELOG.md или git log (тег)
+      placeholder: v1.0.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Логи / скриншоты
+      description: Скриншот чата Клода, вывод терминала. НЕ вставляй `.env` и секреты.
+      render: shell
+
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Приватность
+      options:
+        - label: Я убедился что в описании нет моих приватных данных (API-ключей, содержимого `.env`, ПДн клиентов)
+          required: true

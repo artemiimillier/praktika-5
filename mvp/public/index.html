@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мультик — твой ребёнок в главной роли</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/theme.css">
+<style>
+  /* Токены — в /theme.css (канон: .business/assets/design-system.md) */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); background: var(--grad-dream); background-attachment: fixed; color: var(--plum-ink); min-height: 100vh; }
+
+  /* фоновый декор — «магическая пыль» */
+  .bg-decor { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .bg-decor svg { position: absolute; }
+
+  .wrap { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 28px 20px 80px; }
+  header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; gap: 16px; flex-wrap: wrap; }
+  .logo { font-family: var(--font-script); font-size: 30px; color: var(--pink-hero); line-height: 1; text-shadow: 0 3px 12px rgba(255,46,151,.22); }
+  .logo span { color: var(--pink-hero); }
+  .cost { background: rgba(255,255,255,.72); border: 1px solid rgba(123,87,176,.16); border-radius: var(--r-pill); padding: 9px 18px; font-size: 14px; color: var(--plum-soft); box-shadow: var(--shadow-soft); }
+  .cost b { color: var(--grape); font-weight: 800; font-variant-numeric: tabular-nums; }
+  h1 { font-family: var(--font-display); font-weight: 800; font-size: 30px; color: var(--grape); margin-bottom: 8px; letter-spacing: -.01em; }
+  .sub { color: var(--plum-soft); margin-bottom: 24px; font-size: 15px; }
+  .step-badge { display: inline-block; font-family: var(--font-display); background: var(--pink-mist); color: var(--grape); font-size: 12px; font-weight: 700; border-radius: var(--r-pill); padding: 5px 14px; margin-bottom: 12px; letter-spacing: .03em; }
+
+  /* upload */
+  .drop { border: 2px dashed var(--lilac); border-radius: var(--r-lg); background: rgba(255,255,255,.55); padding: 48px 24px; text-align: center; cursor: pointer; transition: .18s; }
+  .drop:hover, .drop.over { border-color: var(--pink-hero); background: var(--pink-mist); transform: translateY(-1px); }
+  .drop .big { font-size: 46px; margin-bottom: 10px; }
+  .drop b { color: var(--plum-ink); }
+  .drop p { color: var(--plum-soft); font-size: 14px; margin-top: 6px; }
+  .preview-row { display: flex; gap: 20px; align-items: center; margin-top: 18px; }
+  .preview-row img { width: 140px; height: 140px; object-fit: cover; border-radius: var(--r-md); border: 4px solid var(--white); box-shadow: var(--shadow-card); }
+
+  .btn { display: inline-block; font-family: var(--font-display); background: var(--grad-pink); color: #fff; font-weight: 700; font-size: 16px; border: none; border-radius: var(--r-pill); padding: 14px 28px; cursor: pointer; transition: .18s; box-shadow: var(--shadow-glow-pink); }
+  .btn:hover { filter: brightness(1.04); transform: translateY(-1px); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; filter: grayscale(.25); }
+  .btn.secondary { background: var(--lavender-mist); color: var(--grape); border: 1px solid var(--lilac); font-weight: 700; font-size: 13px; padding: 8px 16px; box-shadow: none; }
+  .btn.secondary:hover { background: #E1D3F4; }
+
+  /* characters grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; margin-top: 18px; }
+  .char { background: var(--white); border: 2px solid transparent; border-radius: var(--r-lg); overflow: hidden; cursor: pointer; transition: .18s; position: relative; box-shadow: var(--shadow-soft); }
+  .char:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); }
+  .char.selected { border-color: var(--pink-hero); box-shadow: 0 0 0 4px rgba(255,46,151,.18), var(--shadow-card); }
+  .char .imgbox { aspect-ratio: 1; background: var(--lavender-mist); display: flex; align-items: center; justify-content: center; position: relative; }
+  .char .imgbox img { width: 100%; height: 100%; object-fit: cover; }
+  .char .label { padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--grape); }
+  .char .check { position: absolute; top: 10px; right: 10px; background: var(--grad-pink); color: #fff; width: 30px; height: 30px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-weight: 900; box-shadow: var(--shadow-glow-pink); }
+  .char.selected .check { display: flex; }
+
+  .spinner { width: 38px; height: 38px; border: 4px solid var(--lavender-mist); border-top-color: var(--pink-hero); border-radius: 50%; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .status-txt { position: absolute; bottom: 10px; left: 0; right: 0; text-align: center; color: var(--plum-soft); font-size: 12px; }
+  .errbox { color: var(--rose-bright); font-size: 13px; padding: 10px; text-align: center; font-weight: 600; }
+
+  /* storyboard */
+  .board { margin-top: 18px; background: rgba(255,255,255,.6); border: 1px solid rgba(123,87,176,.14); border-radius: var(--r-xl); min-height: 320px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 14px; overflow: hidden; box-shadow: var(--shadow-card); }
+  .board img { width: 100%; display: block; }
+  .actions { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; align-items: center; }
+  .hidden { display: none !important; }
+  .muted-note { color: var(--plum-soft); font-size: 13px; }
+  section { margin-bottom: 44px; }
+  a.dl { color: var(--pink-hero); font-size: 14px; font-weight: 700; font-family: var(--font-display); text-decoration: none; }
+  a.dl:hover { text-decoration: underline; }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--rose-bright); color: #fff; padding: 12px 22px; border-radius: var(--r-pill); font-size: 14px; display: none; max-width: 90vw; box-shadow: var(--shadow-card); font-weight: 600; z-index: 50; }
+</style>
+</head>
+<body>
+<div class="bg-decor" aria-hidden="true">
+  <div style="position:absolute; top:-70px; right:-50px; width:260px; height:260px; border-radius:50%; background:radial-gradient(circle, rgba(255,168,214,.45), transparent 70%); filter:blur(22px);"></div>
+  <div style="position:absolute; bottom:60px; left:-70px; width:280px; height:280px; border-radius:50%; background:radial-gradient(circle, rgba(166,140,217,.38), transparent 70%); filter:blur(26px);"></div>
+  <svg width="18" height="18" viewBox="0 0 24 24" style="top:92px; left:6%; opacity:.85;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#FF2E97"/></svg>
+  <svg width="12" height="12" viewBox="0 0 24 24" style="top:150px; right:9%; opacity:.8;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#A98FD9"/></svg>
+  <svg width="12" height="12" viewBox="0 0 24 24" style="top:330px; left:12%; opacity:.8;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#E3AE4E"/></svg>
+  <svg width="14" height="14" viewBox="0 0 24 24" style="top:300px; right:15%; opacity:.9;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#FFFFFF"/></svg>
+  <svg width="14" height="14" viewBox="0 0 24 24" style="bottom:230px; left:8%; opacity:.75;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#FF2E97"/></svg>
+  <svg width="16" height="16" viewBox="0 0 24 24" style="bottom:150px; right:10%; opacity:.7;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#A98FD9"/></svg>
+</div>
+<div class="wrap">
+  <header>
+    <div class="logo">🎬 Мульт<span>ик</span></div>
+    <div class="cost">Потрачено: <b id="cost">$0.00</b> · <span id="costImgs">0 генераций</span></div>
+  </header>
+
+  <!-- ШАГ 1: загрузка -->
+  <section id="stepUpload">
+    <div class="step-badge">Шаг 1 из 3</div>
+    <h1>Загрузи фотографию ребёнка</h1>
+    <p class="sub">Лучше всего работает чёткое фото анфас, где хорошо видно лицо.</p>
+    <div class="drop" id="drop">
+      <div class="big">📸</div>
+      <div><b>Нажми или перетащи фото сюда</b></div>
+      <p>JPG или PNG, до 20 МБ</p>
+      <input type="file" id="file" accept="image/*" hidden>
+    </div>
+    <div class="preview-row hidden" id="previewRow">
+      <img id="previewImg" alt="фото">
+      <div>
+        <button class="btn" id="goBtn">Создать персонажей ✨</button>
+        <p class="muted-note" style="margin-top:8px">4 стиля · ~$0.08 · около 30 секунд</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ШАГ 2: персонажи -->
+  <section id="stepChars" class="hidden">
+    <div class="step-badge">Шаг 2 из 3</div>
+    <h1>Выбери своего персонажа</h1>
+    <p class="sub">Нажми на того, в ком ребёнок узнал себя. Не похож — жми «Заново» на карточке.</p>
+    <div class="grid" id="charGrid"></div>
+    <div class="actions">
+      <button class="btn" id="nextBtn" disabled>Далее → Раскадровка</button>
+    </div>
+  </section>
+
+  <!-- ШАГ 3: раскадровка -->
+  <section id="stepBoard" class="hidden">
+    <div class="step-badge">Шаг 3 из 3</div>
+    <h1>Лист персонажа для мультика</h1>
+    <p class="sub">Персонаж с разных ракурсов + эмоции — основа будущей раскадровки и видео.</p>
+    <div class="board" id="board">
+      <div class="spinner"></div>
+      <div class="muted-note" id="boardStatus">Рисуем раскадровку…</div>
+    </div>
+    <div class="actions">
+      <button class="btn secondary" id="boardRetry">🔄 Сгенерировать заново</button>
+      <a class="dl hidden" id="boardDl" target="_blank" download>⬇️ Скачать в полном размере</a>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const state = { sourceUrl: null, chars: {}, selectedKey: null, boardTask: null };
+
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg; t.style.display = 'block';
+  setTimeout(() => (t.style.display = 'none'), 6000);
+}
+
+async function api(path, body) {
+  const res = await fetch(path, body
+    ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
+    : undefined);
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.error || res.status);
+  return json;
+}
+
+// ---- стоимость ----
+async function refreshCost() {
+  try {
+    const u = await api('/api/usage');
+    $('cost').textContent = '$' + u.totalUsd.toFixed(2);
+    $('costImgs').textContent = u.images + ' генераций';
+  } catch {}
+}
+setInterval(refreshCost, 4000);
+
+// ---- шаг 1: загрузка ----
+const drop = $('drop'), fileInput = $('file');
+drop.onclick = () => fileInput.click();
+drop.ondragover = (e) => { e.preventDefault(); drop.classList.add('over'); };
+drop.ondragleave = () => drop.classList.remove('over');
+drop.ondrop = (e) => { e.preventDefault(); drop.classList.remove('over'); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); };
+fileInput.onchange = () => fileInput.files[0] && handleFile(fileInput.files[0]);
+
+let dataUrl = null, fileName = null;
+function handleFile(f) {
+  if (f.size > 20 * 1024 * 1024) return toast('Файл больше 20 МБ');
+  fileName = f.name;
+  const r = new FileReader();
+  r.onload = () => {
+    dataUrl = r.result;
+    $('previewImg').src = dataUrl;
+    $('previewRow').classList.remove('hidden');
+  };
+  r.readAsDataURL(f);
+}
+
+$('goBtn').onclick = async () => {
+  const btn = $('goBtn');
+  btn.disabled = true; btn.textContent = 'Загружаем фото…';
+  try {
+    const { imageUrl } = await api('/api/upload', { dataUrl, fileName });
+    state.sourceUrl = imageUrl;
+    btn.textContent = 'Запускаем художников…';
+    const { tasks } = await api('/api/characters', { imageUrl });
+    $('stepChars').classList.remove('hidden');
+    renderCharCards(tasks);
+    tasks.forEach((t) => pollChar(t));
+    $('stepChars').scrollIntoView({ behavior: 'smooth' });
+    btn.textContent = 'Персонажи создаются ниже ↓';
+  } catch (e) {
+    toast('Ошибка: ' + e.message);
+    btn.disabled = false; btn.textContent = 'Создать персонажей ✨';
+  }
+};
+
+// ---- шаг 2: персонажи ----
+function renderCharCards(tasks) {
+  const grid = $('charGrid');
+  grid.innerHTML = '';
+  tasks.forEach((t) => {
+    state.chars[t.key] = { ...t, url: null };
+    const el = document.createElement('div');
+    el.className = 'char'; el.id = 'char-' + t.key;
+    el.innerHTML = `
+      <div class="imgbox">
+        <div class="spinner"></div>
+        <div class="status-txt">рисуем…</div>
+      </div>
+      <div class="label"><span>${t.emoji} ${t.name}</span>
+        <button class="btn secondary" data-redo="${t.key}">Заново</button></div>
+      <div class="check">✓</div>`;
+    el.onclick = (e) => {
+      if (e.target.dataset.redo) return;
+      if (!state.chars[t.key].url) return;
+      selectChar(t.key);
+    };
+    el.querySelector('[data-redo]').onclick = async (e) => {
+      e.stopPropagation();
+      await regenChar(t.key);
+    };
+    grid.appendChild(el);
+  });
+}
+
+function selectChar(key) {
+  state.selectedKey = key;
+  document.querySelectorAll('.char').forEach((c) => c.classList.remove('selected'));
+  $('char-' + key).classList.add('selected');
+  $('nextBtn').disabled = false;
+}
+
+async function pollChar(t) {
+  const box = document.querySelector('#char-' + t.key + ' .imgbox');
+  try {
+    const r = await api('/api/task/' + encodeURIComponent(t.taskId));
+    if (r.state === 'success' && r.urls[0]) {
+      state.chars[t.key].url = r.urls[0];
+      box.innerHTML = `<img src="${r.urls[0]}" alt="${t.name}">`;
+      refreshCost();
+      return;
+    }
+    if (r.state === 'fail') {
+      box.innerHTML = `<div class="errbox">😞 Не получилось: ${r.error || 'ошибка генерации'}<br>Нажми «Заново»</div>`;
+      return;
+    }
+    box.querySelector('.status-txt').textContent = ({ waiting: 'в очереди…', queuing: 'в очереди…', generating: 'рисуем…' })[r.state] || 'рисуем…';
+  } catch (e) { /* сеть мигнула — продолжаем поллить */ }
+  setTimeout(() => pollChar(t), 3000);
+}
+
+async function regenChar(key) {
+  const box = document.querySelector('#char-' + key + ' .imgbox');
+  box.innerHTML = '<div class="spinner"></div><div class="status-txt">рисуем заново…</div>';
+  state.chars[key].url = null;
+  if (state.selectedKey === key) { state.selectedKey = null; $('nextBtn').disabled = true; $('char-' + key).classList.remove('selected'); }
+  try {
+    const { taskId } = await api('/api/regenerate', { imageUrl: state.sourceUrl, styleKey: key });
+    state.chars[key].taskId = taskId;
+    pollChar(state.chars[key]);
+  } catch (e) { toast('Ошибка: ' + e.message); }
+}
+
+// ---- шаг 3: раскадровка ----
+$('nextBtn').onclick = () => startBoard();
+$('boardRetry').onclick = () => startBoard();
+
+async function startBoard() {
+  const ch = state.chars[state.selectedKey];
+  if (!ch || !ch.url) return;
+  $('stepBoard').classList.remove('hidden');
+  $('board').innerHTML = '<div class="spinner"></div><div class="muted-note" id="boardStatus">Рисуем раскадровку…</div>';
+  $('boardDl').classList.add('hidden');
+  $('stepBoard').scrollIntoView({ behavior: 'smooth' });
+  try {
+    const { taskId } = await api('/api/storyboard', { characterUrl: ch.url, sourceUrl: state.sourceUrl });
+    state.boardTask = taskId;
+    pollBoard(taskId);
+  } catch (e) { toast('Ошибка: ' + e.message); }
+}
+
+async function pollBoard(taskId) {
+  if (state.boardTask !== taskId) return; // запущен новый
+  try {
+    const r = await api('/api/task/' + encodeURIComponent(taskId));
+    if (r.state === 'success' && r.urls[0]) {
+      $('board').innerHTML = `<img src="${r.urls[0]}" alt="раскадровка">`;
+      const dl = $('boardDl');
+      dl.href = r.urls[0]; dl.classList.remove('hidden');
+      refreshCost();
+      return;
+    }
+    if (r.state === 'fail') {
+      $('board').innerHTML = `<div class="errbox">😞 Не получилось: ${r.error || 'ошибка'}. Попробуй «Сгенерировать заново».</div>`;
+      return;
+    }
+    const st = document.getElementById('boardStatus');
+    if (st) st.textContent = ({ waiting: 'в очереди…', queuing: 'в очереди…', generating: 'художник за работой…' })[r.state] || 'рисуем…';
+  } catch (e) { /* продолжаем */ }
+  setTimeout(() => pollBoard(taskId), 3000);
+}
+
+refreshCost();
+</script>
+</body>
+</html>
